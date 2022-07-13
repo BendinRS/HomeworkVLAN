@@ -8,17 +8,15 @@ MACHINES = {
         :box_name => "centos/7",
         #:public => {:ip => '10.10.10.1', :adapter => 1},
         :net => [
-            {ip: '192.168.11.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
-            # {ip: '192.168.11.2', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
-            # {ip: '192.168.11.5', adapter: 4, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
+            {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
+            {ip: '192.168.255.5', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
               ]
   },
   :centralRouter => {
         :box_name => "centos/7",
         :net => [
-            {ip: '192.168.11.3', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
-            # {ip: '192.168.11.10', adapter: 5, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
-            # {ip: '192.168.11.4', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
+            {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
+            {ip: '192.168.255.10', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
             {ip: '192.168.10.1', adapter: 4, netmask: "255.255.255.0", virtualbox__intnet: "dev5-net"},
               ]
   },
