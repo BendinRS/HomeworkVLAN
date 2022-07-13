@@ -2,32 +2,36 @@
 # tasks file for dns
 
 
+  - name: Add the bonding module
+    modprobe:
+      name: bonding
+      state: present  
 
-  # - name: copy config device bond to routers
-  #   template:
-  #     src: bond.dev1.j2
-  #     dest: /etc/sysconfig/network-scripts/ifcfg-eth3
-  # - name: copy config device bond to routers
-  #   template:
-  #     src: bond.dev2.j2
-  #     dest: /etc/sysconfig/network-scripts/ifcfg-eth4
+  - name: copy config device bond to routers
+    template:
+      src: bond.dev1.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-eth3
+  - name: copy config device bond to routers
+    template:
+      src: bond.dev2.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-eth4
 
-  # - name: copy config bond to routers
-  #   template:
-  #     src: bond.j2
-  #     dest: /etc/sysconfig/network-scripts/ifcfg-bond0
+  - name: copy config bond to routers
+    template:
+      src: bond.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-bond0
 
-  # - name: copy config VLAN100 to centralRouter
-  #   template:
-  #     src: CReth2vlan100.j2
-  #     dest: /etc/sysconfig/network-scripts/ifcfg-eth2.100
-  #   when: (ansible_hostname == "centralRouter")
+  - name: copy config VLAN100 to centralRouter
+    template:
+      src: CReth2vlan100.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-eth2.100
+    when: (ansible_hostname == "centralRouter")
 
-  # - name: copy config VLAN101 to centralRouter
-  #   template:
-  #     src: CReth2vlan101.j2
-  #     dest: /etc/sysconfig/network-scripts/ifcfg-eth2.101
-  #   when: (ansible_hostname == "centralRouter")
+  - name: copy config VLAN101 to centralRouter
+    template:
+      src: CReth2vlan101.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-eth2.101
+    when: (ansible_hostname == "centralRouter")
 
   - name: restart network
     service:
