@@ -4,7 +4,7 @@ ONBOOT=yes
 BOOTPROTO=none
 MASTER=bond0
 SLAVE=yes
-NM_CONTROLLED=yes
+NM_CONTROLLED=no
 USERCTL=no
 {% endif %}
 {% if ansible_hostname == 'inetRouter' %}
@@ -13,7 +13,7 @@ ONBOOT=yes
 BOOTPROTO=none
 MASTER=bond0
 SLAVE=yes
-NM_CONTROLLED=yes
+NM_CONTROLLED=no
 USERCTL=no
 {% endif %}
 
