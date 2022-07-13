@@ -1,6 +1,11 @@
 ---
 # tasks file for dns
 
+  - name: install tcpdump
+    yum:
+      state: present
+      name:
+        - tcpdump
 
   # - name: Add the bonding module
   #   modprobe:

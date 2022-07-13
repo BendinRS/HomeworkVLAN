@@ -7,6 +7,12 @@
   #       - bind
   #       - bind-utils
   #       # - ntp
+  - name: install tcpdump
+    yum:
+      state: present
+      name:
+        - tcpdump
+
 
   - name: copy config VLAN to hosts
     template:
