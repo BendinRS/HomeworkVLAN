@@ -1,5 +1,5 @@
 ---
 # vars file for dns
 
-file: [ 'a', 'b', 'c', 'd' ]
-names:  [ 1, 2, 3, 4 ]
+
+

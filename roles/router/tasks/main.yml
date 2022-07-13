@@ -7,19 +7,19 @@
       name: bonding
       state: present  
 
-  - name: copy config device bond to routers
-    template:
-      src: bond.dev1.j2
-      dest: /etc/sysconfig/network-scripts/ifcfg-eth3
-  - name: copy config device bond to routers
-    template:
-      src: bond.dev2.j2
-      dest: /etc/sysconfig/network-scripts/ifcfg-eth4
+  # - name: copy config device bond to routers
+  #   template:
+  #     src: bond.dev1.j2
+  #     dest: /etc/sysconfig/network-scripts/ifcfg-eth3
+  # - name: copy config device bond to routers
+  #   template:
+  #     src: bond.dev2.j2
+  #     dest: /etc/sysconfig/network-scripts/ifcfg-eth4
 
-  - name: copy config bond to routers
-    template:
-      src: bond.j2
-      dest: /etc/sysconfig/network-scripts/ifcfg-bond0
+  # - name: copy config bond to routers
+  #   template:
+  #     src: bond.j2
+  #     dest: /etc/sysconfig/network-scripts/ifcfg-bond0
 
   - name: copy config VLAN100 to centralRouter
     template:
@@ -32,6 +32,31 @@
       src: CReth2vlan101.j2
       dest: /etc/sysconfig/network-scripts/ifcfg-eth2.101
     when: (ansible_hostname == "centralRouter")
+
+  - name: Try nmcli add bond - conn_name only & ip4 gw4 mode
+    nmcli:
+      type: bond
+      conn_name: bond0
+      ip4: 192.168.255.1
+      mode: active-backup
+      state: present
+
+  - name: Try nmcli add bond-slave
+    nmcli:
+      type: bond-slave
+      conn_name: eth1
+      ifname: eth1
+      master: bond0
+      state: present
+
+  - name: Try nmcli add bond-slave
+    nmcli:
+      type: bond-slave
+      conn_name: eth2
+      ifname: eth2
+      master: bond0
+      state: present
+
 
   - name: restart network
     service:
