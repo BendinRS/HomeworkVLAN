@@ -2,10 +2,10 @@
 # tasks file for dns
 
 
-  - name: Add the bonding module
-    modprobe:
-      name: bonding
-      state: present  
+  # - name: Add the bonding module
+  #   modprobe:
+  #     name: bonding
+  #     state: present  
 
   # - name: copy config device bond to routers
   #   template:
@@ -33,30 +33,15 @@
       dest: /etc/sysconfig/network-scripts/ifcfg-eth2.101
     when: (ansible_hostname == "centralRouter")
 
-  - name: Try nmcli add bond - conn_name only & ip4 gw4 mode
-    nmcli:
-      type: bond
-      conn_name: bond0
-      ip4: 192.168.255.1
-      mode: active-backup
+  - name: Create an active LACP bond using eth4 and eth5 on bridge br-ex
+    openvswitch.openvswitch.openvswitch_bond:
+      bridge: br-ex
+      port: bond1
+      interfaces:
+        - eth1
+        - eth2
+      lacp: active
       state: present
-
-  - name: Try nmcli add bond-slave
-    nmcli:
-      type: bond-slave
-      conn_name: eth1
-      ifname: eth1
-      master: bond0
-      state: present
-
-  - name: Try nmcli add bond-slave
-    nmcli:
-      type: bond-slave
-      conn_name: eth2
-      ifname: eth2
-      master: bond0
-      state: present
-
 
   - name: restart network
     service:
