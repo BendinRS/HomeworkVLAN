@@ -81,10 +81,10 @@ Vagrant.configure("2") do |config|
             sysctl net.ipv4.conf.all.forwarding=1
             #iptables -t nat -A POSTROUTING ! -d 192.168.10.0/16 -o eth0 -j MASQUERADE
             sudo su
-            # nmcli con add type bond con-name bond0 ifname bond0 mode active-backup ip4 192.168.255.1
-            # nmcli con add type bond-slave ifname eth1 master bond0
-            # nmcli con add type bond-slave ifname eth2 master bond0
-            # systemctl restart network
+            nmcli con add type bond con-name bond0 ifname bond0 mode active-backup ip4 192.168.255.1
+            nmcli con add type bond-slave ifname eth1 master bond0
+            nmcli con add type bond-slave ifname eth2 master bond0
+            systemctl restart network
             # nmcli con up bond-slave-eth3
             # nmcli con up bond-slave-eth4
             # nmcli connection up bond0
@@ -92,11 +92,11 @@ Vagrant.configure("2") do |config|
         when "centralRouter"
           box.vm.provision "shell", run: "always", inline: <<-SHELL
             sysctl net.ipv4.conf.all.forwarding=1
-            # sudo su
-            # nmcli con add type bond con-name bond0 ifname bond0 mode active-backup ip4 192.168.255.2
-            # nmcli con add type bond-slave ifname eth1 master bond0
-            # nmcli con add type bond-slave ifname eth2 master bond0
-            # systemctl restart network
+            sudo su
+            nmcli con add type bond con-name bond0 ifname bond0 mode active-backup ip4 192.168.255.2
+            nmcli con add type bond-slave ifname eth1 master bond0
+            nmcli con add type bond-slave ifname eth2 master bond0
+            systemctl restart network
             # nmcli con up bond-slave-eth3
             # nmcli con up bond-slave-eth4
             # nmcli connection up bond0
