@@ -7,17 +7,9 @@ MACHINES = {
 :inetRouter => {
         :box_name => "centos/7",
         #:public => {:ip => '10.10.10.1', :adapter => 1},
-        :net => [
-                   {adapter: 2},
-                   {adapter: 3},
-                ]
   },
   :centralRouter => {
         :box_name => "centos/7",
-        :net => [
-                    {adapter: 2},
-                    {adapter: 3},
-                ]
   },
   :testClient1 => {
         :box_name => "centos/7",
