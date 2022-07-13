@@ -2,24 +2,24 @@
 # tasks file for dns
 
 
-  # - name: Add the bonding module
-  #   modprobe:
-  #     name: bonding
-  #     state: present  
+  - name: Add the bonding module
+    modprobe:
+      name: bonding
+      state: present  
 
-  # - name: copy config device bond to routers
-  #   template:
-  #     src: bond.dev1.j2
-  #     dest: /etc/sysconfig/network-scripts/ifcfg-eth3
-  # - name: copy config device bond to routers
-  #   template:
-  #     src: bond.dev2.j2
-  #     dest: /etc/sysconfig/network-scripts/ifcfg-eth4
+  - name: copy config device bond to routers
+    template:
+      src: bond.dev1.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-eth3
+  - name: copy config device bond to routers
+    template:
+      src: bond.dev2.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-eth4
 
-  # - name: copy config bond to routers
-  #   template:
-  #     src: bond.j2
-  #     dest: /etc/sysconfig/network-scripts/ifcfg-bond0
+  - name: copy config bond to routers
+    template:
+      src: bond.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-bond0
 
   - name: copy config VLAN100 to centralRouter
     template:
