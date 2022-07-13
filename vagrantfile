@@ -8,14 +8,14 @@ MACHINES = {
         :box_name => "centos/7",
         #:public => {:ip => '10.10.10.1', :adapter => 1},
         :net => [
-            {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
+            {ip: '192.168.255.3', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
             {ip: '192.168.255.5', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
               ]
   },
   :centralRouter => {
         :box_name => "centos/7",
         :net => [
-            {ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
+            {ip: '192.168.255.5', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
             {ip: '192.168.255.10', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
             {ip: '192.168.10.1', adapter: 4, netmask: "255.255.255.0", virtualbox__intnet: "dev5-net"},
               ]
@@ -81,7 +81,7 @@ Vagrant.configure("2") do |config|
             sysctl net.ipv4.conf.all.forwarding=1
             #iptables -t nat -A POSTROUTING ! -d 192.168.10.0/16 -o eth0 -j MASQUERADE
             sudo su
-            nmcli con add type bond con-name bond0 ifname bond0 mode active-backup ip4 192.168.255.1/24
+            nmcli con add type bond con-name bond0 ifname bond0 mode 1 ip4 192.168.255.1/24
             nmcli con add type bond-slave ifname eth1 master bond0
             nmcli con add type bond-slave ifname eth2 master bond0
             systemctl restart network
@@ -93,7 +93,7 @@ Vagrant.configure("2") do |config|
           box.vm.provision "shell", run: "always", inline: <<-SHELL
             sysctl net.ipv4.conf.all.forwarding=1
             sudo su
-            nmcli con add type bond con-name bond0 ifname bond0 mode active-backup ip4 192.168.255.2/24
+            nmcli con add type bond con-name bond0 ifname bond0 mode 1 ip4 192.168.255.2/24
             nmcli con add type bond-slave ifname eth1 master bond0
             nmcli con add type bond-slave ifname eth2 master bond0
             systemctl restart network
