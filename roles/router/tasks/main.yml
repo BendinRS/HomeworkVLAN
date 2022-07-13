@@ -2,24 +2,24 @@
 # tasks file for dns
 
 
-  - name: Add the bonding module
-    modprobe:
-      name: bonding
-      state: present  
+  # - name: Add the bonding module
+  #   modprobe:
+  #     name: bonding
+  #     state: present  
 
-  - name: copy config device bond to routers
-    template:
-      src: bond.dev1.j2
-      dest: /etc/sysconfig/network-scripts/ifcfg-eth3
-  - name: copy config device bond to routers
-    template:
-      src: bond.dev2.j2
-      dest: /etc/sysconfig/network-scripts/ifcfg-eth4
+  # - name: copy config device bond to routers
+  #   template:
+  #     src: bond.dev1.j2
+  #     dest: /etc/sysconfig/network-scripts/ifcfg-eth3
+  # - name: copy config device bond to routers
+  #   template:
+  #     src: bond.dev2.j2
+  #     dest: /etc/sysconfig/network-scripts/ifcfg-eth4
 
-  - name: copy config bond to routers
-    template:
-      src: bond.j2
-      dest: /etc/sysconfig/network-scripts/ifcfg-bond0
+  # - name: copy config bond to routers
+  #   template:
+  #     src: bond.j2
+  #     dest: /etc/sysconfig/network-scripts/ifcfg-bond0
 
   - name: copy config VLAN100 to centralRouter
     template:
@@ -33,15 +33,6 @@
       dest: /etc/sysconfig/network-scripts/ifcfg-eth2.101
     when: (ansible_hostname == "centralRouter")
 
-  - name: Create an active LACP bond using eth4 and eth5 on bridge br-ex
-    openvswitch.openvswitch.openvswitch_bond:
-      bridge: br-ex
-      port: bond1
-      interfaces:
-        - eth1
-        - eth2
-      lacp: active
-      state: present
 
   - name: restart network
     service:
