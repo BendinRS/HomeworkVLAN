@@ -1,0 +1,12 @@
+---
+# tasks file for dns
+  - name: install packages
+    yum:
+      state: present
+      name:
+        - bind
+        - bind-utils
+        # - ntp
+
+
+
