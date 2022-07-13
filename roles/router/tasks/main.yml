@@ -9,7 +9,7 @@
   - name: copy config device bond to routers
     template:
       src: "{{ item }}"
-      dest: /etc/sysconfig/network-scripts/ifcfg-"{{ item }}"
+      dest: /etc/sysconfig/network-scripts/
       with_fileglob:
         - bond.dev1.j2
         - bond.dev2.j2
@@ -17,7 +17,7 @@
   - name: copy config VLANond to centralRouter
     template:
       src: "{{ item }}"
-      dest: /etc/sysconfig/network-scripts/ifcfg-"{{ item }}"
+      dest: /etc/sysconfig/network-scripts/
       with_fileglob:
         - CReth2vlan100.j2
         - CReth2vlan101.j2
