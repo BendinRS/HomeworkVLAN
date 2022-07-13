@@ -1,0 +1,20 @@
+{% if ansible_hostname == 'centralRouter' %}
+DEVICE=eth3
+ONBOOT=yes
+BOOTPROTO=none
+MASTER=bond0
+SLAVE=yes
+NM_CONTROLLED=no
+USERCTL=no
+{% endif %}
+{% if ansible_hostname == 'inetRouter' %}
+DEVICE=eth2
+ONBOOT=yes
+BOOTPROTO=none
+MASTER=bond0
+SLAVE=yes
+NM_CONTROLLED=no
+USERCTL=no
+{% endif %}
+
+

@@ -1,121 +1,28 @@
 ---
 # tasks file for dns
-  - name: install packages
-    yum:
-      state: present
-      name:
-        - bind
-        - bind-utils
-        # - ntp
 
-  - name: start chronyd
-    service:
-      name: chronyd
-      state: restarted
-      enabled: true
-
-  - name: started named
-    service:
-      name: named
-      state: started
-      enabled: yes
-
-  - name: copy named.zonetransfer.key to the servers
-    copy:
-      src: ./files/named.zonetransfer.key
-      dest: /etc/named.zonetransfer.key
-      owner: root
-      group: named
-      mode: 0644
-
-  - name: copy named.ddns to the servers
-    copy:
-      src: ./files/named.ddns.lab
-      dest: /etc/named/named.ddns.lab
-      owner: root
-      group: named
-      mode: 0644
-
-  - name: copy named.newdns.lab
-    copy:
-      src: ./files/named.newdns.lab
-      dest: /etc/named/named.newdns.lab
-      owner: root
-      group: named
-      mode: 0644
-
-  - name: Copy named.conf to the ns01
-    copy:
-       src: ./files/master-named.conf
-       dest: /etc/named.conf
-       owner: root
-       group: named
-       mode: 0644
-    when: (ansible_hostname == "ns01")
-
-  - name: Copy named.conf to the ns02
-    copy:
-       src: ./files/slave-named.conf
-       dest: /etc/named.conf
-       owner: root
-       group: named
-       mode: 0644
-    when: (ansible_hostname == "ns02")
-
-  - name: copy zones to the ns01 named.dns.lab
-    copy: 
-      src: ./files/named.dns.lab
-      dest: /etc/named/named.dns.lab
-      owner: root 
-      group: named
-      mode: 0660
-    when: (ansible_hostname == "ns01")
-
-  - name: copy zones to the ns01 named.newdns.lab
-    copy: 
-      src: ./files/named.newdns.lab
-      dest: /etc/named/named.newdns.lab
-      owner: root 
-      group: named
-      mode: 0660
-    when: (ansible_hostname == "ns01")
-
-  - name: copy zones to the ns01 named.dns.lab.client
-    copy: 
-      src: ./files/named.dns.lab.client
-      dest: /etc/named/named.dns.lab.client
-      owner: root 
-      group: named
-      mode: 0660
-    when: (ansible_hostname == "ns01")
-
-  - name: copy zones to the ns01 named.dns.lab.rev
-    copy: 
-      src: ./files/named.dns.lab.rev
-      dest: /etc/named/named.dns.lab.rev
-      owner: root 
-      group: named
-      mode: 0660
-    when: (ansible_hostname == "ns01")
-
-  - name: copy resolv.conf to the servers
+  - name: copy config bond to routers
     template:
-      src: resolv.conf.j2
-      dest: /etc/resolv.conf
-      owner: root
-      group: root
-      mode: 0644
+      src: bond.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-bond0
 
-  - name: set /etc/named permissions
-    file: 
-      path: /etc/named 
-      owner: root
-      group: named
-      mode: 0670
+  - name: copy config device bond to routers
+    template:
+      src: {{ item }}
+      dest: /etc/sysconfig/network-scripts/ifcfg-{{ item }}
+      with_fileglob:
+        - bond.dev1.j2
+        - bond.dev2.j2
 
-  - name: ensure named is running and enabled
+  - name: copy config VLANond to centralRouter
+    template:
+      src: {{ item }}
+      dest: /etc/sysconfig/network-scripts/ifcfg-{{ item }}
+      with_fileglob:
+        - CReth2vlan100.j2
+        - CReth2vlan101.j2
+
+  - name: restart network
     service:
-      name: named
+      name: network
       state: restarted
-      enabled: yes
-
