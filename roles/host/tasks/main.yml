@@ -1,0 +1,25 @@
+---
+# tasks file for dns
+  # - name: install packages
+  #   yum:
+  #     state: present
+  #     name:
+  #       - bind
+  #       - bind-utils
+  #       # - ntp
+  - name: install tcpdump
+    yum:
+      state: present
+      name:
+        - tcpdump
+
+
+  - name: copy config VLAN to hosts
+    template:
+      src: eth_vlan.j2
+      dest: /etc/sysconfig/network-scripts/ifcfg-eth0.vlan
+
+  - name: restart network
+    service:
+      name: network
+      state: restarted

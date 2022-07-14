@@ -1,0 +1,111 @@
+# -*- mode: ruby -*-
+# vim: set ft=ruby :
+# -*- mode: ruby -*-
+# vim: set ft=ruby :
+
+MACHINES = {
+:inetRouter => {
+        :box_name => "centos/7",
+        #:public => {:ip => '10.10.10.1', :adapter => 1},
+        :net => [
+            {ip: '192.168.255.3', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
+            {ip: '192.168.255.5', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
+              ]
+  },
+  :centralRouter => {
+        :box_name => "centos/7",
+        :net => [
+            {ip: '192.168.255.5', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
+            {ip: '192.168.255.10', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "dev4-net"},
+            {ip: '192.168.10.1', adapter: 4, netmask: "255.255.255.0", virtualbox__intnet: "dev5-net"},
+              ]
+  },
+  :testClient1 => {
+        :box_name => "centos/7",
+        :vm_name => "testClient1",
+        :net => [
+              {ip: '192.168.10.10', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev5-net"},
+                ]
+    },
+ :testServer1 => {
+        :box_name => "centos/7",
+        :vm_name => "testServer1",
+        :net => [
+            {ip: '192.168.10.15', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev5-net"},
+                ]
+    },
+  :testClient2 => {
+        :box_name => "centos/7",
+        :vm_name => "testClient2",
+        :net => [
+            {ip: '192.168.10.20', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev5-net"},
+                ]
+    },
+   :testServer2 => {
+        :box_name => "centos/7",
+        :vm_name => "testServer2",
+        :net => [
+            {ip: '192.168.10.25', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "dev5-net"},
+                ]
+    },
+
+  
+}
+
+Vagrant.configure("2") do |config|
+
+  MACHINES.each do |boxname, boxconfig|
+
+    config.vm.define boxname do |box|
+
+        box.vm.box = boxconfig[:box_name]
+        box.vm.host_name = boxname.to_s
+        
+        boxconfig[:net].each do |ipconf|
+            box.vm.network "private_network", ipconf
+          end
+
+        
+        if boxconfig.key?(:public)
+          box.vm.network "public_network", boxconfig[:public]
+        end
+
+        box.vm.provision "shell", inline: <<-SHELL
+          mkdir -p ~root/.ssh
+                cp ~vagrant/.ssh/auth* ~root/.ssh
+        SHELL
+        
+        case boxname.to_s
+        when "inetRouter"
+          box.vm.provision "shell", run: "always", inline: <<-SHELL
+            sysctl net.ipv4.conf.all.forwarding=1
+            #iptables -t nat -A POSTROUTING ! -d 192.168.10.0/16 -o eth0 -j MASQUERADE
+            # sudo su
+            # nmcli con add type bond con-name bond0 ifname bond0 mode 1 ip4 192.168.255.1/24
+            # nmcli con add type bond-slave ifname eth1 master bond0
+            # nmcli con add type bond-slave ifname eth2 master bond0
+            # systemctl restart network
+            # nmcli con up bond-slave-eth3
+            # nmcli con up bond-slave-eth4
+            # nmcli connection up bond0
+            SHELL
+        when "centralRouter"
+          box.vm.provision "shell", run: "always", inline: <<-SHELL
+            sysctl net.ipv4.conf.all.forwarding=1
+            # sudo su
+            # nmcli con add type bond con-name bond0 ifname bond0 mode 1 ip4 192.168.255.2/24
+            # nmcli con add type bond-slave ifname eth1 master bond0
+            # nmcli con add type bond-slave ifname eth2 master bond0
+            # systemctl restart network
+            # nmcli con up bond-slave-eth3
+            # nmcli con up bond-slave-eth4
+            # nmcli connection up bond0
+            SHELL
+        end
+
+      end
+
+  end
+  
+  
+end

@@ -1,0 +1,52 @@
+{% if ansible_hostname == 'testClient1' %}
+ONBOOT=yes
+TYPE=Ethernet
+VLAN=yes
+VLAN_NAME_TYPE=DEV_PLUS_VID_NO_PAD
+DEVICE=vlan100
+PHYSDEV=eth1
+VLAN_ID=100
+BOOTPROTO=static
+IPADDR=10.10.10.1
+NETMASK=255.255.255.0
+NM_CONTROLLED=no
+{% endif %}
+{% if ansible_hostname == 'testServer1' %}
+ONBOOT=yes
+TYPE=Ethernet
+VLAN=yes
+VLAN_NAME_TYPE=DEV_PLUS_VID_NO_PAD
+DEVICE=vlan100
+PHYSDEV=eth1
+VLAN_ID=100
+BOOTPROTO=static
+IPADDR=10.10.10.254
+NETMASK=255.255.255.0
+NM_CONTROLLED=no
+{% endif %}
+{% if ansible_hostname == 'testClient2' %}
+ONBOOT=yes
+TYPE=Ethernet
+VLAN=yes
+VLAN_NAME_TYPE=DEV_PLUS_VID_NO_PAD
+DEVICE=vlan101
+PHYSDEV=eth1
+VLAN_ID=101
+BOOTPROTO=static
+IPADDR=10.10.10.1
+NETMASK=255.255.255.0
+NM_CONTROLLED=no
+{% endif %}
+{% if ansible_hostname == 'testServer2' %}
+ONBOOT=yes
+TYPE=Ethernet
+VLAN=yes
+VLAN_NAME_TYPE=DEV_PLUS_VID_NO_PAD
+DEVICE=vlan101
+PHYSDEV=eth1
+VLAN_ID=101
+BOOTPROTO=static
+IPADDR=10.10.10.254
+NETMASK=255.255.255.0
+NM_CONTROLLED=no
+{% endif %}
